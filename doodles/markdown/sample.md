@@ -1,6 +1,6 @@
 ## ACM Meeting Minutes for 05-31-2012
   
-1. Call to Order at 05-31-2012 05:08 
+1. Call to Order at 05-31-2012 05:08
     1. Current Board
     2. Roll Call:   
         1. Administrative Cabinet:
@@ -8,25 +8,21 @@
             2. Vice President: came in 05-31-2012 04:56 came in 05-31-2012 04:59 
             3. Treasuer: came in 05-31-2012 04:56 came in 05-31-2012 04:59 
             4. Secretary: 
-            2. Appointed Positions:
-            1. AESB Representitive: Present 
-            2. Publicity & Recruitment Chair: Present 
-            3. Market Manager: Present 
-            4. Membership Chair:    Present 
-            0. Webmaster:  Present 
-            5. Office Technician: came in 05-31-2012 05:09 
-            6. Historian:came in 05-31-2012 05:09 
-            1. Librarian:Present 
-        3. Project Managers: Present 
+            
+    2. Appointed Positions:
+            1. AESB Representitive: Present
+            1. Publicity & Recruitment Chair: Present
+            1. Market Manager: Present
+            1. Membership Chair: Present
+            1. Webmaster: Present
+            1. Office Technician: came in 05-31-2012 05:09
+            1. Historian:came in 05-31-2012 05:09
+            1. Librarian:Present            
+    1. Project Managers
             1. Socie-D: Present 
             2. Women in Computing:
             3. Augmented Ebay:
-            0. Motion: 
-                1. First:
-                2. Second:
-                3. Discussion:
-                    1. None 
-        4. Approval of the Agenda: [PASS]
+    4. Approval of the Agenda: [PASS]
         1. Ian: [PASS]
         2. David: [PASS]
     3. Approval of the Minutes:
