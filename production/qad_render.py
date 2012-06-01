@@ -39,9 +39,10 @@ if __name__ == '__main__':
 			else:
 				appos.append(add_member(row[0], row[1], row[2]))
 		index += 1
-		
+	
 	print template.render({
 		"executive" : execs,
 		"appointed" : appos,
-		"minutes" : content
+		"minutes" : markdown.markdown(content)
 	});
+	print execs
