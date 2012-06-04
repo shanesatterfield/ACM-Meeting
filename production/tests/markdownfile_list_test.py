@@ -57,7 +57,7 @@ def add_test(reset = True):
 		print 
 		test.reset()
 
-def markdown_test():
+def fruit_test():
 	from markdownfile import MarkdownList
 
 	root = MarkdownList()
@@ -66,10 +66,45 @@ def markdown_test():
 
 	leaf = MarkdownList()
 	leaf.append("This is a leaf.")
-	leaf.append("This is a leaf.")
+	leaf.append("This is 2a leaf.")
 
+	fruit = MarkdownList()
+	fruit.append("I am a cherry.")
+	fruit.append("I am too a cherry.")
+
+	bug = MarkdownList()
+	bug.append("I am a cherry.")
+	bug.append("I am too a cherry.")
+
+	fruit.append(bug)
+	leaf.append(fruit)
 	root.append(leaf)
 
+	print root.markdown()
+
+def markdown_test():
+	from markdownfile import MarkdownList	
+
+	lists = []
+	
+	root = MarkdownList()
+	root.append("Foo")
+	root.append("Bar")
+
+
+	for n in xrange(0, 21):
+		node = MarkdownList()
+		node.append("First!")
+		node.append(":(")
+		node.append("This list is glorious!")
+		lists.append(node)
+
+
+	for index, n in enumerate(lists):
+		if index + 1 < len(lists):
+			lists[index + 1].append(n)
+
+	root.append(lists[-1])
 	print root.markdown()
 
 do_test(init_test, "Initialization")

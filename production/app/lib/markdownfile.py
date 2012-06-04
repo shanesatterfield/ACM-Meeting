@@ -12,7 +12,7 @@ class MarkdownList(IndentedFile):
 	_list_contents = None
 
 	def __init__(self, ordered = False):
-		IndentedFile.__init__(self, "-")
+		IndentedFile.__init__(self, " ")
 		self._list_contents = []
 		self._ordered = ordered
 
@@ -28,24 +28,25 @@ class MarkdownList(IndentedFile):
 		else:
 			self._list_contents.append(item)
 
-	def markdown(self, level=0, hasParent = False):
+	def markdown(self, level=0):
 		self._level = level
+		init_level  = self._level
 
-		tabbed = False
-
+		first_item = True
 		for list_item in self._list_contents:
 			if type(list_item) == str:
-				if tabbed:
-					tabbed = False
-					self.tab()
-
-				self.write("0. " + list_item)
+				if first_item:
+					self.write("1. " + list_item)
+					first_item = False
+				else:
+					self._level = init_level
+					self.write("0. " + list_item)
 			else:
 				if isinstance(list_item, MarkdownList):
-					self.tab()
-					self.write(list_item.markdown(self._level, True))
+					self._level = 0
+					self.write(list_item.markdown(init_level + 1))
 
-		return self._contents
+		return self._contents[:-1] # We want to take off the extra linebreak at the end
 
 	# Handy things
 
@@ -67,7 +68,7 @@ class MarkdownList(IndentedFile):
 	def __getitem__(self, key):
 		return self._list_contents[key]
 
-	def __getitem__(self, key, item):
+	def __setitem__(self, key, item):
 		if type(item) != str and not isinstance(item, MarkdownList):
 			raise Exception("ValueError")
 		else:
