@@ -12,7 +12,7 @@ class MarkdownList(IndentedFile):
 	_list_contents = None
 
 	def __init__(self, ordered = False):
-		IndentedFile.__init__(self, " ")
+		IndentedFile.__init__(self)
 		self._list_contents = []
 		self._ordered = ordered
 
@@ -30,20 +30,18 @@ class MarkdownList(IndentedFile):
 
 	def markdown(self, level=0):
 		self._level = level
-		init_level  = self._level
+		init_level  = level
 
-		first_item = True
 		for list_item in self._list_contents:
 			if type(list_item) == str:
-				if first_item:
-					self.write("1. " + list_item)
-					first_item = False
-				else:
-					self._level = init_level
+				self._level = init_level
+				if self._ordered:
 					self.write("0. " + list_item)
+				else:
+					self.write("- " + list_item)
 			else:
 				if isinstance(list_item, MarkdownList):
-					self._level = 0
+					self._level = 0 
 					self.write(list_item.markdown(init_level + 1))
 
 		return self._contents[:-1] # We want to take off the extra linebreak at the end
