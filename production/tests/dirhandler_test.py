@@ -7,7 +7,6 @@ clear()
 sys.path.insert(0, '../app/lib')
 sys.path.insert(0, '../app/')
 
-from dirhandler import DirHandler as dirhandler
 import traceback
 import am_config
 
@@ -15,6 +14,7 @@ test = None
 
 def init_test():
     global test
+    from dirhandler import DirHandler as dirhandler
     test = dirhandler(am_config.MINUTES_DIRECTORY)
 
 def mkdir_test():

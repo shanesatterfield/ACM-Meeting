@@ -4,17 +4,26 @@ import os
 
 def clear():
     name = os.name
-    if name == "nt":
-        os.system("cls")
-    if name == "posix":
-        os.system("clear")
+    if not name == "nt" and not name == "posix":
+        print "\n"*80
+    else:
+        if name == "nt":
+            os.system("cls")
+        if name == "posix":
+            os.system("clear")
+
+def comp(a, b):
+    return a == b
+
+def wtf(str = ""):
+    raise Exception("SemanticError: Ran fine, unexpected result. \n " + str)
 
 def good(str):
-    print "[PASS]:" + str
+    print "[PASS]: " + str
     print ""
 
 def bad(str):
-    print "[FAIL]:" + str
+    print "[FAIL]: " + str
 
 
 def do_test(func, good_message, bad_message = None):
