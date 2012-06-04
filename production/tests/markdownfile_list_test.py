@@ -58,21 +58,26 @@ def add_test(reset = True):
 		test.reset()
 
 def fruit_test():
-	from markdownfile import MarkdownList
+	from markdownfile import MarkdownList as m
 
-	root = MarkdownList()
+	class MarkdownList(m):
+		def __init__(self, ordered = False):
+			m.__init__(self, ordered)
+			self._indent = " "
+
+	root = MarkdownList(True)
 	root.append("I am root")
 	root.append("I am root also")
 
 	leaf = MarkdownList()
 	leaf.append("This is a leaf.")
-	leaf.append("This is 2a leaf.")
+	leaf.append("This is the leaf.")
 
 	fruit = MarkdownList()
 	fruit.append("I am a cherry.")
 	fruit.append("I am too a cherry.")
 
-	bug = MarkdownList()
+	bug = MarkdownList(True)
 	bug.append("I am a cherry.")
 	bug.append("I am too a cherry.")
 
@@ -83,7 +88,12 @@ def fruit_test():
 	print root.markdown()
 
 def markdown_test():
-	from markdownfile import MarkdownList	
+	from markdownfile import MarkdownList as m
+
+	class MarkdownList(m):
+		def __init__(self, ordered = False):
+			m.__init__(self, ordered)
+			self._indent = " "
 
 	lists = []
 	
@@ -110,3 +120,4 @@ def markdown_test():
 do_test(init_test, "Initialization")
 do_test(add_test, "Adding Strings and MarkdownLists")
 do_test(markdown_test, "Markdown ouput")
+do_test(fruit_test, "Markdown ouput with ordered and unordered lists")
