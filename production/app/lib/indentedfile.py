@@ -1,3 +1,8 @@
+"""
+	Class to provide a convenient way to create indented files
+	
+	Author: David Nuon
+"""
 class IndentedFile:
 	_indent  = "\t"
 	_level   = 0

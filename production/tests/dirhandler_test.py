@@ -1,3 +1,9 @@
+"""
+    Test for DirHandler class
+
+    Author: David Nuon
+"""
+
 #!/usr/bin/env python
 from testhelper import *
 import sys
