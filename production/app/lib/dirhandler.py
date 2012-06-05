@@ -10,6 +10,7 @@ import sys
 
 class DirHandler:
 	__dir_path  = ''
+	__dir_list  = []
 	__file_list = []
 
 	def __init__(self, path):
@@ -18,12 +19,28 @@ class DirHandler:
 
 	def generate_list(self):
 		# Get the output of os.walk as a list
+		
+		dirs = [n for n in os.walk(self.__dir_path)]
 		# then get only files of the root, [0]
-		# then get only directories, [1]
+			# then get only directories, [1]
+			# then get only files, [2]
 
-		self.__file_list = [n for n in os.walk(self.__dir_path)][0][1]
+		self.__dir_list  = dirs[0][1]
+		self.__file_list = dirs[0][2]
 
-	def get_list(self):
+	def cd(self, directory):
+		dir_path = os.path.join(self.__dir_path, directory)
+
+		if os.path.exists(dir_path):
+			self.__dir_path = dir_path
+			self.generate_list()
+		else:
+			raise IOError("Directory does not exist")
+
+	def dir(self):
+		return self.__dir_list
+
+	def ls(self):
 		return self.__file_list
 
 	def mkdir(self, dirname):
@@ -39,8 +56,8 @@ class DirHandler:
 		try:
 			if not dirname == '.':
 				path = os.path.join(self.__dir_path, dirname, filename)
-
 			os.remove(path)
+			self.generate_list()
 		except:
 			raise IOError("Unable to delete file")
 
@@ -58,3 +75,5 @@ class DirHandler:
 
 		with open(path, 'w+') as f:
 			f.write(content)
+
+		self.generate_list()

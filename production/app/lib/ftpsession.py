@@ -4,7 +4,7 @@ Simplified ftp module
 Author: Shane Satterfield
 Author: David Nuon
 """
-class ftp_session:
+class FTPSession:
 	def __init__(self, host, user, passwd):
 		from ftplib import FTP
 		if user:
@@ -29,7 +29,7 @@ class ftp_session:
 	"""
 	def download(self, file, local_file):
 		with open('local_file', 'wb') as f:
-			self.ftp.retrbinary('RETR '+file, lambda data: f.write(data))
+			self.ftp.retrbinary('RETR '+ file, lambda data: f.write(data))
 	"""
 	# Deletes file
 	def delete(self, file):
