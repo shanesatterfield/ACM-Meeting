@@ -13,7 +13,7 @@ class FTPSession:
 			self.ftp = FTP(host)
 
 	# Shows what is in the current directory.
-	def ls(self):
+	def list(self):
 		self.ftp.dir()
 
 	# Changes the directory to the give path.
@@ -26,15 +26,47 @@ class FTPSession:
 		self.ftp.storbinary('STOR '+file, open(file, 'rb'))
 
 	# Inprogress
-	"""
 	def download(self, file, local_file):
-		with open('local_file', 'wb') as f:
-			self.ftp.retrbinary('RETR '+ file, lambda data: f.write(data))
-	"""
+		pass
+		"""with open('local_file', 'wb') as f:
+			self.ftp.retrbinary('RETR '+ file, lambda data: f.write(data))"""
+	
 	# Deletes file
-	def delete(self, file):
+	def rm(self, file):
 		self.ftp.delete(file)
 
 	# Quits out of the ftp session. Call this function when you are done using the object.
 	def quit(self):
 		self.ftp.quit()
+
+	def ls(self):
+		pass
+		# Shows the files in the directory.
+
+	def dir(self):
+		pass
+		# Shows the directories in the directories.
+
+	def create_file(self):
+		pass 
+		# Creates a file in the current directory.
+
+	def rmdir(self, path):
+		pass
+		# Remvoes a directory located at path.
+
+	def mkdir(self):
+		pass
+		# Creates a directory.
+
+	def file_exists(self, filename):
+		pass
+		# Returns if there is a file in path.
+
+	def dir_exists(self, dirName):
+		pass
+		# Returns if there is given directory in path.
+
+	def close(self):
+		pass
+		# Forced close from the ftp session.
