@@ -42,8 +42,20 @@ class FTPSession:
 		self.ftp.quit()
 		
 	# Shows the files in the directory.
-	def ls(self):
-		pass
+	def ls(self, path=''):
+		list = []
+		if path:
+			list = self.ftp.nlst(path)
+		else:
+			list = self.ftp.nlst()
+
+		b = 0
+		for x in list:
+			if "." in x:
+				print x
+				b+=1
+		if b==0:
+			print 'None.'
 	
 	# Shows the directories in the directories.
 	def dir(self):
@@ -74,7 +86,6 @@ class FTPSession:
 	def dir_exists(self, dirName):
 		pass
 		
-
 	# Forced close from the ftp session.
 	def close(self):
 		self.ftp.close()
