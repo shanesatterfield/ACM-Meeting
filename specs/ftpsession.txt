@@ -1,0 +1,69 @@
+__init__
+# Attempt to make a connection, raise an exception when it doesn't work
+
+
+===========
+The functions below should also call another function to refresh the cached list in the 
+class
+===========
+
+cd
+# Change directory
+
+upload
+# Upload a file, raise exception when it does not work.
+# Should be able to check for whether the text is plaintext or
+# binary
+
+rm
+# Delete a file on the server, raise execption when it does not work
+# After the operation is compelted, referesh the list
+
+create_file
+# (I don't know, about this one.)
+# Touch a file on the server. Raise exception when it does not work.
+
+rmdir
+# Delete a directory on the server. Raise exception when it does not work.
+
+mkdir
+# Make a directory on the server. Raise exception when it does not work.
+
+quit
+# Close the FTP Session
+
+
+==========
+These functions just check what's on the server.
+The contents of the class should not be changed
+==========
+
+download
+# Download a file, raise exception when it does not work.
+# Should be able to determin the right way to download and write to disk.
+
+list
+# Should be replaced with ls
+
+ls
+# Return a list of files. Raise exception when it does not work.
+
+dir
+# Return a list of directories. Raise exception when it does not work.
+
+file_exists
+# Check if a file exists. Raise exception when it does not work.
+
+dir_exists
+# Check if a dir exists. Raise exception when it does not work.
+
+
+==========
+These should make sure everything is clean and nothing is in queue before quitting
+==========
+
+quit
+# Quit FTP sesion
+
+close
+# Forcefully close the FTP Session 
