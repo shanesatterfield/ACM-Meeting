@@ -4,10 +4,10 @@ Simplified ftp module
 Author: Shane Satterfield
 Author: David Nuon
 """
+import os
 class FTPSession:
 	def __init__(self, host, user, passwd):
 		from ftplib import FTP
-		import os
 		if user:
 			self.ftp = FTP(host, user, passwd)
 		else:
@@ -26,11 +26,12 @@ class FTPSession:
 	def upload(self, file):
 		self.ftp.storbinary('STOR '+file, open(file, 'rb'))
 
-	# Inprogress
+	# Finally working. Allows the user to download a file through ftp.
 	def download(self, file, local_file):
-		pass
-		"""with open('local_file', 'wb') as f:
-			self.ftp.retrbinary('RETR '+ file, lambda data: f.write(data))"""
+		with open(local_file, 'wb') as f:
+			def callback(data):
+				f.write(data)
+			self.ftp.retrbinary('RETR '+ file, callback)
 	
 	# Deletes file
 	def rm(self, file):
@@ -39,38 +40,42 @@ class FTPSession:
 	# Quits out of the ftp session. Call this function when you are done using the object.
 	def quit(self):
 		self.ftp.quit()
-
+		
+	# Shows the files in the directory.
 	def ls(self):
 		pass
-		# Shows the files in the directory.
-
+	
+	# Shows the directories in the directories.
 	def dir(self):
 		pass
-		# Shows the directories in the directories.
-
-	def create_file(self, filename):
-		with open(filename, 'w+') as f:
+		
+	# Creates a file in the current directory.
+	def create_file(self, file):
+		with open(file, 'w+') as f:
 			pass
-		upload(filename)
-		os.remove(filename)
-		# Creates a file in the current directory.
-
+		self.ftp.storbinary('STOR '+file, open(file, 'rb'))
+		os.remove(file)
+	
+	# Remvoes a directory located at path.
 	def rmdir(self, path):
 		self.ftp.rmd(path)
-		# Remvoes a directory located at path.
+	
 
+	# Creates a directory.
 	def mkdir(self, pathname):
 		self.ftp.mkd(pathname)
-		# Creates a directory.
+		
 
+	# Returns if there is a file in path.
 	def file_exists(self, filename):
 		pass
-		# Returns if there is a file in path.
-
+		
+	# Returns if there is given directory in path.
 	def dir_exists(self, dirName):
 		pass
-		# Returns if there is given directory in path.
+		
 
+	# Forced close from the ftp session.
 	def close(self):
 		self.ftp.close()
-		# Forced close from the ftp session.
+		
