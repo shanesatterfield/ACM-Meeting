@@ -7,6 +7,7 @@ Author: David Nuon
 class FTPSession:
 	def __init__(self, host, user, passwd):
 		from ftplib import FTP
+		import os
 		if user:
 			self.ftp = FTP(host, user, passwd)
 		else:
@@ -47,16 +48,19 @@ class FTPSession:
 		pass
 		# Shows the directories in the directories.
 
-	def create_file(self):
-		pass 
+	def create_file(self, filename):
+		with open(filename, 'w+') as f:
+			pass
+		upload(filename)
+		os.remove(filename)
 		# Creates a file in the current directory.
 
 	def rmdir(self, path):
-		pass
+		self.ftp.rmd(path)
 		# Remvoes a directory located at path.
 
-	def mkdir(self):
-		pass
+	def mkdir(self, pathname):
+		self.ftp.mkd(pathname)
 		# Creates a directory.
 
 	def file_exists(self, filename):
@@ -68,5 +72,5 @@ class FTPSession:
 		# Returns if there is given directory in path.
 
 	def close(self):
-		pass
+		self.ftp.close()
 		# Forced close from the ftp session.
