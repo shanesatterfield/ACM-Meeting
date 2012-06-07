@@ -15,49 +15,81 @@ sys.path.insert(0, '../app/lib')
 sys.path.insert(0, '../app/')
 
 test = None
+dirhandler = None
 
 def init_test():
-	from ftpsession import FTPSession
-	test = FTPSession("", "", "") #TODO : Write a valid constructor
+    global test
+    global dirhandler
 
-def ls_test():
-    pass
+    args = sys.argv[:-1]
+    path = ""
 
-def create_file_test():
-    pass
+    if len(args) == 0:
+        wtf("Please enter a path for the local test directory")
+    else:
+        args[0] = path
 
-def rm_test():
-    pass
+    from ftpsession import FTPSession
+    from dirhandler import DirHandler
 
-def file_exists_test():
-    pass
+    dirhandler = DirHandler(path)
+    test = FTPSession("", "", "") #TODO : Write a valid constructor
 
-def dir_test():
-    pass
 
-def mkdir_test():
-    pass
+def make_environment():
+    global test
+    test.mkdir("test")
+    test.cd("test") # This folder should be empty
 
-def rmdir_test():
-    pass
+def spam_dir_test():
+    global test
+    dirlist = range(0, 10)
 
-def dir_exists_test():
-    pass
+    for item in dirlist:
+        test.mkdir(str(item))
 
-def upload_test():
-    pass
+    if not comp(test.dir(), dirlist):
+        wtf("The created directories do not appear in the list")
 
-def downlaod_test():
-    pass
+    for item in dirlist:
+        test.rmdir(str(item))
 
-do_test(init_test, "Create Object")
-do_test(ls_test, "List Remote Files")
-do_test(create_file_test, "Create Files")
-do_test(rm_test, "Delete Files")
-do_test(file_exists_test, "Check for file")
-do_test(dir_test, "List Directories")
-do_test(mkdir_test, "Make Directory")
-do_test(rmdir_test, "Delete Directory")
-do_test(dir_exists_test, "Check if Directory exists")
-do_test(upload_test, "Upload")
-do_test(downlaod_test, "Donwload")
+def spam_files_test():
+    global test
+    testfiles = ["test_file.txt"]    
+
+    if not comp(test.ls(), []):
+        wtf("The test directory is not empty")
+
+    test.create_file(testfiles[0], "file_content")
+    if not comp(test.ls(), testfiles):
+        wtf("The test file created does not appeear in the list.")
+
+    for n in xrange(0, 10):
+        testfiles.append(str(n))
+        test.create_file(str(n), "blah blah blah")
+
+    if not comp(test.ls(), testfiles):
+        wtf("The 10 new files created do not appear in the list.")
+
+    for item in testfiles:
+        test.rm(item)
+
+    if not comp(test.ls(), []):
+        wtf("The test directory is not empty")
+
+
+def cleanup_test():
+    global test
+    if not test.current_dir() == "test":
+        wtf("We should be in our test environment.")
+    else:
+        test.cd("..")
+        test.rmdir("test")
+    test.quit()
+
+do_test(init_test, "Initialize")
+do_test(make_environment, "Start our testing")
+do_test(spam_dir_test, "Make lots of directories")
+do_test(spam_files_test, "Make lots of files")
+do_test(cleanup_test, "Cleanup")

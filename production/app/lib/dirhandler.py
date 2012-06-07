@@ -15,7 +15,11 @@ class DirHandler:
 
 	def __init__(self, path):
 		self.__dir_path = path
-		self.generate_list()
+
+		if not os.path.exists(path):
+			raise IOError("Path not found")
+		else:
+			self.generate_list()
 
 	def generate_list(self):
 		# Get the output of os.walk as a list
