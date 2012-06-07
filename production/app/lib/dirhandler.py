@@ -28,9 +28,12 @@ class DirHandler:
 		# then get only files of the root, [0]
 			# then get only directories, [1]
 			# then get only files, [2]
-
-		self.__dir_list  = dirs[0][1]
-		self.__file_list = dirs[0][2]
+		if len(dirs) == 0:
+			self.__dir_list = []
+			self.__file_list = []
+		else:
+			self.__dir_list  = dirs[0][1]
+			self.__file_list = dirs[0][2]
 
 	def cd(self, directory):
 		dir_path = os.path.join(self.__dir_path, directory)

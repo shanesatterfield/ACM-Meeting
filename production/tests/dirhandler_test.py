@@ -50,7 +50,6 @@ def makefiles_test():
     for n in xrange(0, 10):
         test.rm(str(n))
 
-    print test.ls()
     if not comp(test.ls(), []):
         wtf()
 
