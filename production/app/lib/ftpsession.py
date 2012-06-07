@@ -49,13 +49,19 @@ class FTPSession:
 		else:
 			list = self.ftp.nlst()
 
-		b = 0
+		fileList = []
+
 		for x in list:
 			if "." in x:
-				print x
-				b+=1
-		if b==0:
-			print 'None.'
+				if '/' in x:
+					temp = x.split('/')
+					file = temp.pop()
+					fileList.append(file)
+
+				else:
+					fileList.append(x)
+
+		return fileList
 	
 	# Shows the directories in the directories.
 	def dir(self):
@@ -72,7 +78,6 @@ class FTPSession:
 	def rmdir(self, path):
 		self.ftp.rmd(path)
 	
-
 	# Creates a directory.
 	def mkdir(self, pathname):
 		self.ftp.mkd(pathname)
@@ -80,13 +85,54 @@ class FTPSession:
 
 	# Returns if there is a file in path.
 	def file_exists(self, filename):
-		pass
+		path = ''
+		list = []
+		if '/' in filename:
+			temp = filename.split('/')
+			file = temp.pop()
+			path = '/'.join(temp)
+			list = self.ls(path)
+
+		else:
+			file = filename
+			list = self.ls()
+
+		for x in list:
+			if x == file:
+				return True
+
+		return False
 		
 	# Returns if there is given directory in path.
-	def dir_exists(self, dirName):
-		pass
+	def dir_exists(self, dName):
+		path = ''
+
+		list = []
+		"""if path:
+			list = self.ftp.nlst(path)
+		else:
+			list = self.ftp.nlst()
+		"""
+		if '/' in dName:
+			temp = dName.split('/')
+			dirName = temp.pop()
+			path = '/'.join(temp)
+			list = self.ftp.nlst(path)
+
+		else:
+			dirName = dName
+			list = self.ftp.nlst()
+
+		for x in list:
+			if x.find('.') != -1:
+				list.pop(list.index(x))
+
+		for x in list:
+			if x == dirName:
+				return True
+
+		return False
 		
 	# Forced close from the ftp session.
 	def close(self):
 		self.ftp.close()
-		
