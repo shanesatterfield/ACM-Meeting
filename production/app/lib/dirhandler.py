@@ -16,7 +16,7 @@ class DirHandler:
 	def __init__(self, path):
 		self.__dir_path = path
 
-		if not os.path.exists(path):
+		if not os.path.exists(self.__dir_path):
 			raise IOError("Path not found")
 		else:
 			self.generate_list()
@@ -29,7 +29,7 @@ class DirHandler:
 			# then get only directories, [1]
 			# then get only files, [2]
 		if len(dirs) == 0:
-			self.__dir_list = []
+			self.__dir_list  = []
 			self.__file_list = []
 		else:
 			self.__dir_list  = dirs[0][1]

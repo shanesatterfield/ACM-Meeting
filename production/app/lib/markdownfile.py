@@ -9,18 +9,15 @@ from indentedfile import IndentedFile
 
 class MarkdownList(IndentedFile):
 	_ordered = False
-	_list_contents = None
+	_list_contents = []
 
 	def __init__(self, ordered = False):
 		IndentedFile.__init__(self)
 		self._list_contents = []
 		self._ordered = ordered
 
-	def is_unordered(self, list_type = None):
-		if list_type == None:
-			return self._ordered
-		else:
-			self._ordered = list_type
+	def _clear(self):
+		self._list_contents = []
 
 	def append(self, item):
 		if type(item) != str and not isinstance(item, MarkdownList):

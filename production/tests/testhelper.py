@@ -16,7 +16,7 @@ def comp(a, b):
     return a == b
 
 def wtf(str = ""):
-    raise Exception("SemanticError: Ran fine, unexpected result. \n " + str)
+    raise Exception("TestFail: " + str)
 
 def good(str):
     print "[PASS]: " + str

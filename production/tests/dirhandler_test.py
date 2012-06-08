@@ -26,6 +26,15 @@ def init_test():
     from dirhandler import DirHandler as dirhandler
     test = dirhandler(current_directory)
 
+def fail_test():
+    from dirhandler import DirHandler
+
+    try:
+        failhander = DirHandler("garbage powujpdopowqjopdjwop")
+        wtf("The object was able to be created")
+    except IOError:
+        pass
+
 # Make a directory to do our test in
 def testenv_test():
     global test
@@ -94,6 +103,7 @@ def cleantestenv():
     test.rmdir("test")
 
 
+do_test(fail_test, "Creating a bad instance")
 do_test(init_test, "DirHandler was able to be initialized", "Intializatid")
 do_test(testenv_test, "mkdir test/cd test")
 do_test(makefiles_test, "Makefiles test")
