@@ -25,6 +25,11 @@ class MarkdownList(IndentedFile):
 		else:
 			self._list_contents.append(item)
 
+	def add_list_heading(self, string):
+		sublist = MarkdownList(True)
+		sublist.append(string)
+		self.append(sublist)
+
 	def markdown(self, level=0):
 		self._level = level
 		init_level  = level
