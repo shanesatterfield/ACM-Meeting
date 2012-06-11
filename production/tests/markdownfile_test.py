@@ -7,20 +7,17 @@
 #!/usr/bin/env python
 from testhelper import *
 import sys
+sys.path.insert(0, '../')
 
 clear()
 
-sys.path.insert(0, '../app/lib')
-sys.path.insert(0, '../app/')
-
 import traceback
-import am_config
 
 test = None
 
 def init_test():
 	global test
-	from markdownfile import MarkdownFile
+	from acm.util.markdownfile import MarkdownFile
 
 	class TestClass(MarkdownFile):
 		def reset(self):

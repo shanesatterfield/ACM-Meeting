@@ -12,22 +12,20 @@ clear()
 
 current_directory = sys.path[0]
 
-sys.path.insert(0, '../app/lib')
-sys.path.insert(0, '../app/')
+sys.path.insert(0, '../')
 
 import traceback
-import am_config
 
 test = None
 
 
 def init_test():
     global test
-    from dirhandler import DirHandler as dirhandler
+    from acm.util.dirhandler import DirHandler as dirhandler
     test = dirhandler(current_directory)
 
 def fail_test():
-    from dirhandler import DirHandler
+    from acm.util.dirhandler import DirHandler
 
     try:
         failhander = DirHandler("garbage powujpdopowqjopdjwop")
@@ -104,7 +102,7 @@ def cleantestenv():
 
 
 do_test(fail_test, "Creating a bad instance")
-do_test(init_test, "DirHandler was able to be initialized", "Intializatid")
+do_test(init_test, "DirHandler was able to be initialized", "Intialized")
 do_test(testenv_test, "mkdir test/cd test")
 do_test(makefiles_test, "Makefiles test")
 do_test(mkdir_test, "make ten directories", "mkdir()")

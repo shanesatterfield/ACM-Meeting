@@ -10,18 +10,16 @@ import sys
 
 clear()
 
-sys.path.insert(0, '../app/lib')
-sys.path.insert(0, '../app/')
+sys.path.insert(0, '../')
 
 import traceback
-import am_config
 
 test = None
 new_list = None
 
 def init_test():
 	global test
-	from markdownfile import MarkdownList
+	from acm.util.markdownfile import MarkdownList
 
 	class TestClass(MarkdownList):
 		def reset(self):
@@ -32,7 +30,7 @@ def init_test():
 
 def add_test(reset = True):
 	global test
-	from markdownfile import MarkdownList
+	from acm.util.markdownfile import MarkdownList
 
 	x = MarkdownList(True)
 	x.append("Deep")
@@ -58,7 +56,7 @@ def add_test(reset = True):
 		test.reset()
 
 def fruit_test():
-	from markdownfile import MarkdownList as m
+	from acm.util.markdownfile import MarkdownList as m
 
 	class MarkdownList(m):
 		def __init__(self, ordered = False):
@@ -88,7 +86,7 @@ def fruit_test():
 	print root.markdown()
 
 def markdown_test():
-	from markdownfile import MarkdownList as m
+	from acm.util.markdownfile import MarkdownList as m
 
 	class MarkdownList(m):
 		def __init__(self, ordered = False):

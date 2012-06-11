@@ -11,8 +11,9 @@ import sys
 
 clear()
 
-sys.path.insert(0, '../app/lib')
-sys.path.insert(0, '../app/')
+current_directory = sys.path[0]
+
+sys.path.insert(0, '../')
 
 test = None
 dirhandler = None
@@ -21,19 +22,11 @@ def init_test():
     global test
     global dirhandler
 
-    args = sys.argv[:-1]
-    path = ""
+    from acm.util.ftpsession import FTPSession
+    from acm.util.dirhandler import DirHandler
 
-    if len(args) == 0:
-        wtf("Please enter a path for the local test directory")
-    else:
-        args[0] = path
-
-    from ftpsession import FTPSession
-    from dirhandler import DirHandler
-
-    dirhandler = DirHandler(path)
-
+    dirhandler = DirHandler(current_directory)
+    
     host = ""
     user = ""
     passwd = ""
