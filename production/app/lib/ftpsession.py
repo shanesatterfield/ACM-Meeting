@@ -148,6 +148,7 @@ class FTPSession:
         
     # Returns if there is a directory dirName in the current directory.
     def dir_exists(self, dirName):
+        #This variable hold the list of directories in the current directory.
         global _dirList
 
         for x in _dirList:
