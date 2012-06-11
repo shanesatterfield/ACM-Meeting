@@ -20,7 +20,7 @@ class FTPSession:
                 self.ftp = ftplib.FTP(host)
             self._generate_list()
         except ftplib.error_perm:
-            pass
+            raise ftplib.error_perm('Cannot connect. Incorrect information.')
 
     def _generate_list(self):
         global _dirList
@@ -67,6 +67,7 @@ class FTPSession:
     def dir(self):
         self._generate_list()
         global _dirList
+
         return _dirList
 
     # Shows what is in the current directory (both files and directories).
@@ -82,7 +83,7 @@ class FTPSession:
             self.ftp.cwd(path)
             self._generate_list()
         except ftplib.error_perm:
-            pass
+            raise ftplib.error_perm('Path does not exist.')
 
     # file is the filepath
     # path is the path to the directory you want to upload to
@@ -91,7 +92,7 @@ class FTPSession:
             self.ftp.storbinary('STOR '+file, open(file, 'rb'))
             self._generate_list()
         except IOError:
-            pass
+            raise IOError('File does not exist.')
 
     # Finally working. Allows the user to download a file through ftp.
     def download(self, file, local_file):
@@ -101,7 +102,7 @@ class FTPSession:
             try:
                 self.ftp.retrbinary('RETR '+ file, callback)
             except IOError:
-                pass
+                raise IOError('File does not exist.')
     
     # Deletes file
     def rm(self, file):
@@ -109,7 +110,7 @@ class FTPSession:
             self.ftp.delete(file)
             self._generate_list()
         except ftplib.error_perm:
-            pass
+            raise ftplib.error_perm('File does not exist.')
 
     # Quits out of the ftp session. Call this function when you are done using the object.
     def quit(self):
@@ -130,7 +131,7 @@ class FTPSession:
             self.ftp.rmd(dirname)
             self._generate_list()
         except ftplib.error_perm:
-            pass
+            raise ftplib.error_perm('Directory does not exist.')
     
     # Creates a directory.
     def mkdir(self, dirname):
