@@ -33,7 +33,12 @@ def init_test():
     from dirhandler import DirHandler
 
     dirhandler = DirHandler(path)
-    test = FTPSession("", "", "") #TODO : Write a valid constructor
+
+    host = ""
+    user = ""
+    passwd = ""
+
+    test = FTPSession(host, user, passwd) #TODO : Write a valid constructor
 
 
 def make_environment():
