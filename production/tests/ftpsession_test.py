@@ -15,18 +15,22 @@ current_directory = sys.path[0]
 
 sys.path.insert(0, '../')
 
+# We're testing the FTP module
 test = None
-dirhandler = None
+
+# DirHandler that will handle files on local machine
+localHandler = None
 
 def init_test():
     global test
-    global dirhandler
+    global localHandler
 
     from acm.util.ftpsession import FTPSession
-    from acm.util.dirhandler import DirHandler
+    import acm.util.dirhandler as dirhandler
 
-    dirhandler = DirHandler(current_directory)
-    
+
+    localHandler = dirhandler.DirHandler(current_directory)
+
     host = ""
     user = ""
     passwd = ""
