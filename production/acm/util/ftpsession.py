@@ -8,6 +8,8 @@ import os
 import ftplib
 class FTPSession:
 
+    _dir_path = ''
+
     _dirList = []
     _fileList = []
     _bothList = []
@@ -19,6 +21,7 @@ class FTPSession:
             else:
                 self.ftp = ftplib.FTP(host)
             self._generate_list()
+            _dir_path = '/'
         except ftplib.error_perm:
             raise ftplib.error_perm('Cannot connect. Incorrect information.')
 
@@ -67,7 +70,6 @@ class FTPSession:
     def dir(self):
         self._generate_list()
         global _dirList
-
         return _dirList
 
     # Shows what is in the current directory (both files and directories).
@@ -81,9 +83,43 @@ class FTPSession:
     def cd(self, path):
         try:
             self.ftp.cwd(path)
+
+            if path[0] == '/':
+                self._dir_path = path
+
+            elif '/' in path and not '..' in path:
+                self._dir_path = self._dir_path + '/' + path
+
+
+            elif '..' in path and len(self._dir_path) > 1:
+                temp = self._dir_path.split('/')
+                temp.pop()
+
+                self._dir_path = '/'.join(temp)
+
+                if len(self._dir_path) == 0:
+                    self._dir_path = '/'
+
+                if self._dir_path.index('/') != 0:
+                    self._dir_path.insert(0, '/')
+
+                if len(path[2:]) > 0:
+                    if len(self._dir_path) > 0 and self._dir_path[len(self._dir_path) -1] != '/':
+                        self._dir_path = self._dir_path + '/' + path[3:]
+                    else:
+                        self._dir_path += path[3:]
+    
+            elif self._dir_path == '/':
+                self._dir_path += path
+            else:
+                self._dir_path = self._dir_path + '/' + path
+
             self._generate_list()
         except ftplib.error_perm:
-            raise ftplib.error_perm('Path does not exist.')
+            raise ftplib.error_perm('The path does not exist.')
+
+    def current_dir(self):
+        return self._dir_path
 
     # file is the filepath
     # path is the path to the directory you want to upload to
@@ -112,10 +148,6 @@ class FTPSession:
         except ftplib.error_perm:
             raise ftplib.error_perm('File does not exist.')
 
-    # Quits out of the ftp session. Call this function when you are done using the object.
-    def quit(self):
-        self.ftp.quit()
-        
     # Creates a file in the current directory.
     def create_file(self, file, content=""):
         with open(file, 'w+') as f:
@@ -133,6 +165,35 @@ class FTPSession:
         except ftplib.error_perm:
             raise ftplib.error_perm('Directory does not exist.')
     
+    #Call this function if you want to delete a directory that has other things inside it.
+    def rmdir_all(self, dirname):
+        global _dirList
+        if dirname in _dirList:
+            try:
+                #Do this just in case there isn't anything in the directory.
+                self.rmdir(dirname)
+            except ftplib.error_perm:
+                self.cd(dirname)
+                self.__rmdir_recursion()
+                self.rmdir(dirname)
+
+    #Use this to recursively go through the child directories and delete the files/empty directories.
+    def __rmdir_recursion(self):
+        global _fileList
+        global _dirList
+        global _bothList
+
+        if len(_fileList) > 0:
+            for f in _fileList:
+                self.rm(f)
+        if len(_dirList) > 0:
+            for x in _dirList:
+                self.cd(x)
+                self.__rmdir_recursion()
+                self.rmdir(x)
+        if len(_bothList) == 0:
+            self.cd('..')
+            
     # Creates a directory.
     def mkdir(self, dirname):
         self.ftp.mkd(dirname)
@@ -156,6 +217,10 @@ class FTPSession:
                 return True
 
         return False
+        
+    # Quits out of the ftp session. Call this function when you are done using the object.
+    def quit(self):
+        self.ftp.quit()
         
     # Forced close from the ftp session.
     def close(self):
