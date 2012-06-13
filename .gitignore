@@ -168,4 +168,6 @@ production/tests/agneda_test.py
 
 .gitignore
 
+production/tests/markdownfile_test.py
 
+production/acm/util/ftpsession.py
