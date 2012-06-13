@@ -21,20 +21,16 @@ class FTPSession:
             else:
                 self.ftp = ftplib.FTP(host)
             self._generate_list()
-            _dir_path = '/'
+            self._dir_path = '/'
         except ftplib.error_perm:
             raise ftplib.error_perm('Cannot connect. Incorrect information.')
 
     def _generate_list(self):
-        global _dirList
-        global _fileList
-        global _bothList
-
         list = self.ftp.nlst()
 
-        _fileList = []
-        _dirList = []
-        _bothList = []
+        self._fileList = []
+        self._dirList = []
+        self._bothList = []
 
         for x in list:
             # Var is the the name of the file/directory that is x.
@@ -49,35 +45,32 @@ class FTPSession:
             else:
                 var = x
 
-            _bothList.append(var)
+            self._bothList.append(var)
 
             #Checks to see if var is a file or directory, then appends var into the respective list.
             if "." in x:
-                _fileList.append(var)
+                self._fileList.append(var)
 
             else:                
-                _dirList.append(var)
+                self._dirList.append(var)
 
 
     # Shows the files in the current directory.
     def ls(self):
         self._generate_list()
-        global _fileList
         
-        return _fileList
+        return self._fileList
 
     # Shows the directories in the directories.
     def dir(self):
         self._generate_list()
-        global _dirList
-        return _dirList
+        return self._dirList
 
     # Shows what is in the current directory (both files and directories).
     def list(self):
         self._generate_list()
-        global _bothList
 
-        return _bothList
+        return self._bothList
 
     # Changes the directory to the give path.
     def cd(self, path):
@@ -123,7 +116,6 @@ class FTPSession:
         if self._dir_path == '/':
             return self._dir_path
         elif len(list) > 1:
-            print list
             return list[-1]
 
     # file is the filepath
@@ -172,8 +164,7 @@ class FTPSession:
     
     #Call this function if you want to delete a directory that has other things inside it.
     def rmdir_all(self, dirname):
-        global _dirList
-        if dirname in _dirList:
+        if dirname in self._dirList:
             try:
                 #Do this just in case there isn't anything in the directory.
                 self.rmdir(dirname)
@@ -184,19 +175,15 @@ class FTPSession:
 
     #Use this to recursively go through the child directories and delete the files/empty directories.
     def __rmdir_recursion(self):
-        global _fileList
-        global _dirList
-        global _bothList
-
-        if len(_fileList) > 0:
-            for f in _fileList:
+        if len(self._fileList) > 0:
+            for f in self._fileList:
                 self.rm(f)
-        if len(_dirList) > 0:
-            for x in _dirList:
+        if len(self._dirList) > 0:
+            for x in self._dirList:
                 self.cd(x)
                 self.__rmdir_recursion()
                 self.rmdir(x)
-        if len(_bothList) == 0:
+        if len(self._bothList) == 0:
             self.cd('..')
             
     # Creates a directory.
@@ -206,18 +193,16 @@ class FTPSession:
 
     # Returns if there is a file in path.
     def file_exists(self, filename):
-        global _fileList
 
-        for x in _fileList:
+        for x in self._fileList:
             if x == filename:
                 return True
         return False
         
     # Returns if there is a directory dirName in the current directory.
     def dir_exists(self, dirName):
-        global _dirList
 
-        for x in _dirList:
+        for x in self._dirList:
             if x == dirName:
                 return True
 
