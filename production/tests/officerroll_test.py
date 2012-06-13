@@ -34,6 +34,7 @@ def init_test():
 	global test
 	global test_business
 
+
 	from acm.model.officerroll import OfficerRoll, OfficerBusiness
 
 	test = OfficerRoll(testdata)

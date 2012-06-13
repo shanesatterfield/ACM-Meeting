@@ -60,6 +60,7 @@ def makefiles_test():
     if not comp(test.ls(), []):
         wtf()
 
+
 def mkdir_test():
     global test
     for n in xrange(0, 10):
