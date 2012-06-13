@@ -10,8 +10,7 @@ import sys
 
 clear()
 
-sys.path.insert(0, "../app/model/")
-sys.path.insert(0, "../app/lib/")
+sys.path.insert(0, "../")
 
 # A CSV File
 
@@ -36,7 +35,7 @@ def init_test():
 	global test
 	global test_business
 
-	from officerroll import OfficerRoll, OfficerBusiness
+	from acm.model.officerroll import OfficerRoll, OfficerBusiness
 
 	test = OfficerRoll(testdata)
 	test_business = OfficerBusiness(testdata)

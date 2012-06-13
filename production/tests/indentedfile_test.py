@@ -10,14 +10,13 @@ import sys
 
 clear()
 
-sys.path.insert(0, '../app/lib')
-sys.path.insert(0, '../app/')
+sys.path.insert(0, '../')
 
 test = None
 
 def init_test():
 	global test
-	from indentedfile import IndentedFile
+	from acm.util.indentedfile import IndentedFile
 
 	class TestClass(IndentedFile):
 		def reset(self):
@@ -40,7 +39,7 @@ def indent_test():
 	test.reset()
 
 def indent_with_space_test():
-	from indentedfile import IndentedFile
+	from acm.util.indentedfile import IndentedFile
 
 	tab = "   "*3 # Tab with three spaces
 	space_test = IndentedFile(tab)

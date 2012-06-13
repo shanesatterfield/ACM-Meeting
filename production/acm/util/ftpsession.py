@@ -11,6 +11,7 @@ class FTPSession:
     _dirList = []
     _fileList = []
     _bothList = []
+    _current_dir = ""
 
     def __init__(self, host, user, passwd):
         try:
@@ -22,16 +23,15 @@ class FTPSession:
         except ftplib.error_perm:
             pass
 
-    def _generate_list(self):
-        global _dirList
-        global _fileList
-        global _bothList
+    def _empty(self):
+        self._fileList = []
+        self._dirList = []
+        self._bothList = []
 
+    def _generate_list(self):
         list = self.ftp.nlst()
 
-        _fileList = []
-        _dirList = []
-        _bothList = []
+        self._empty()
 
         for x in list:
             # Var is the the name of the file/directory that is x.
@@ -46,40 +46,41 @@ class FTPSession:
             else:
                 var = x
 
-            _bothList.append(var)
+            self._bothList.append(var)
 
             #Checks to see if var is a file or directory, then appends var into the respective list.
             if "." in x:
-                _fileList.append(var)
+                self._fileList.append(var)
 
             else:                
-                _dirList.append(var)
+                self._dirList.append(var)
 
 
     # Shows the files in the current directory.
     def ls(self):
         self._generate_list()
-        global _fileList
         
-        return _fileList
+        return self._fileList
 
     # Shows the directories in the directories.
     def dir(self):
         self._generate_list()
-        global _dirList
-        return _dirList
+        return self._dirList
 
     # Shows what is in the current directory (both files and directories).
     def list(self):
         self._generate_list()
-        global _bothList
-
-        return _bothList
+        return self._bothList
 
     # Changes the directory to the give path.
     def cd(self, path):
         try:
             self.ftp.cwd(path)
+
+            # Split the path string, then the current dir
+            # is the last element
+            self.__current_dir = path.split("/")[-1]
+
             self._generate_list()
         except ftplib.error_perm:
             pass
@@ -139,23 +140,23 @@ class FTPSession:
 
     # Returns if there is a file in path.
     def file_exists(self, filename):
-        global _fileList
-
-        for x in _fileList:
+        for x in self._fileList:
             if x == filename:
                 return True
         return False
         
     # Returns if there is a directory dirName in the current directory.
     def dir_exists(self, dirName):
-        global _dirList
-
-        for x in _dirList:
+        for x in self._dirList:
             if x == dirName:
                 return True
 
         return False
         
+    # Reutnrs the current directory
+    def current_dir(self):
+        return self.__current_dir
+
     # Forced close from the ftp session.
     def close(self):
         self.ftp.close()

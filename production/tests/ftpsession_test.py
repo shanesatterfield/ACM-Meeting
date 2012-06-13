@@ -8,38 +8,44 @@
 #!/usr/bin/env python
 from testhelper import *
 import sys
+import argparse
+
+parser = argparse.ArgumentParser()
+
+## Command List
+parser.add_argument('--host', '-host', help="Host Name")
+parser.add_argument('--username', '-u', help="Username")
+parser.add_argument('--password', '-p', default=None, help="Password")
 
 clear()
 
-sys.path.insert(0, '../app/lib')
-sys.path.insert(0, '../app/')
+sys.path.insert(0, '../')
 
 test = None
-dirhandler = None
+running = True
+
 
 def init_test():
     global test
-    global dirhandler
+    global running
 
-    args = sys.argv[:-1]
-    path = ""
+    from acm.util.ftpsession import FTPSession
 
-    if len(args) == 0:
-        wtf("Please enter a path for the local test directory")
+    pargs = parser.parse_args()
+
+    if pargs.host and pargs.username:
+        host = pargs.host
+        user = pargs.username
+
+        if pargs.password == None:
+            passwd = ""
+        else:
+            passwd = pargs.password
+    
+        test = FTPSession(host, user, passwd) 
     else:
-        args[0] = path
-
-    from ftpsession import FTPSession
-    from dirhandler import DirHandler
-
-    dirhandler = DirHandler(path)
-
-    host = ""
-    user = ""
-    passwd = ""
-
-    test = FTPSession(host, user, passwd) #TODO : Write a valid constructor
-
+        running = False
+        raise Exception
 
 def make_environment():
     global test
@@ -48,40 +54,16 @@ def make_environment():
 
 def spam_dir_test():
     global test
-    dirlist = range(0, 10)
+    dirlist = map(lambda x: str(x), range(0, 10))
 
     for item in dirlist:
-        test.mkdir(str(item))
+        test.mkdir(item)
 
     if not comp(test.dir(), dirlist):
         wtf("The created directories do not appear in the list")
 
     for item in dirlist:
-        test.rmdir(str(item))
-
-def spam_files_test():
-    global test
-    testfiles = ["test_file.txt"]    
-
-    if not comp(test.ls(), []):
-        wtf("The test directory is not empty")
-
-    test.create_file(testfiles[0], "file_content")
-    if not comp(test.ls(), testfiles):
-        wtf("The test file created does not appeear in the list.")
-
-    for n in xrange(0, 10):
-        testfiles.append(str(n))
-        test.create_file(str(n), "blah blah blah")
-
-    if not comp(test.ls(), testfiles):
-        wtf("The 10 new files created do not appear in the list.")
-
-    for item in testfiles:
-        test.rm(item)
-
-    if not comp(test.ls(), []):
-        wtf("The test directory is not empty")
+        test.rmdir(item)
 
 
 def cleanup_test():
@@ -94,7 +76,10 @@ def cleanup_test():
     test.quit()
 
 do_test(init_test, "Initialize")
-do_test(make_environment, "Start our testing")
-do_test(spam_dir_test, "Make lots of directories")
-do_test(spam_files_test, "Make lots of files")
-do_test(cleanup_test, "Cleanup")
+
+if running:
+    do_test(make_environment, "Start our testing")
+    do_test(spam_dir_test, "Make lots of directories")
+    do_test(cleanup_test, "Cleanup")
+else:
+    raise Exception("Not enough arguments")

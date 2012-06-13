@@ -10,17 +10,15 @@ import sys
 
 clear()
 
-sys.path.insert(0, '../app/lib')
-sys.path.insert(0, '../app/')
+sys.path.insert(0, '../')
 
 import traceback
-import am_config
 
 test = None
 
 def init_test():
 	global test
-	from markdownfile import MarkdownFile
+	from acm.util.markdownfile import MarkdownFile
 
 	class TestClass(MarkdownFile):
 		def reset(self):
