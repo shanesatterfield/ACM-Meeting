@@ -119,7 +119,12 @@ class FTPSession:
             raise ftplib.error_perm('The path does not exist.')
 
     def current_dir(self):
-        return self._dir_path
+        list = self._dir_path.split('/')
+        if self._dir_path == '/':
+            return self._dir_path
+        elif len(list) > 1:
+            print list
+            return list[-1]
 
     # file is the filepath
     # path is the path to the directory you want to upload to

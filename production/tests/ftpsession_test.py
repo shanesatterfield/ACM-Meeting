@@ -45,7 +45,9 @@ def make_environment():
 
 def spam_dir_test():
     global test
-    dirlist = range(0, 10)
+    dirlist = []
+    for n in range(0, 10):
+        dirlist.append(str(n))
 
     for item in dirlist:
         test.mkdir(str(item))
@@ -68,10 +70,10 @@ def spam_files_test():
         wtf("The test file created does not appeear in the list.")
 
     for n in xrange(0, 10):
-        testfiles.append(str(n))
-        test.create_file(str(n), "blah blah blah")
+        testfiles.append(str(n) + '.txt')
+        test.create_file(str(n) + '.txt', "blah blah blah")
 
-    if not comp(test.ls(), testfiles):
+    if not comp(sorted(test.ls()), sorted(testfiles)):
         wtf("The 10 new files created do not appear in the list.")
 
     for item in testfiles:
@@ -83,11 +85,12 @@ def spam_files_test():
 
 def cleanup_test():
     global test
+
     if not test.current_dir() == "test":
         wtf("We should be in our test environment.")
     else:
         test.cd("..")
-        test.rmdir("test")
+        test.rmdir_all("test")
     test.quit()
 
 do_test(init_test, "Initialize")
