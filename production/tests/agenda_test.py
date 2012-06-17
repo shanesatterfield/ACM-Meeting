@@ -10,8 +10,7 @@ import sys
 
 clear()
 
-sys.path.insert(0, "../app/model/")
-sys.path.insert(0, "../app/lib/")
+sys.path.insert(0, "../")
 
 # A CSV File
 
@@ -34,7 +33,7 @@ global test
 def init_test():
 	global test
 
-	from agenda import Agenda
+	from acm.model.agenda import Agenda
 	test = Agenda(testdata)
 
 def render_test():
