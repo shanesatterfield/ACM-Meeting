@@ -151,7 +151,7 @@ class FTPSession:
             def get(self):
                 return self.__data
 
-        data_file = File()
+        data_file = Capsule()
         try:
             self.ftp.retrbinary('RETR '+ file, data_file.set)
             return data_file.get()
