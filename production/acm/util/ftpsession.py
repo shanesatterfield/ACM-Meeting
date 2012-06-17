@@ -139,6 +139,25 @@ class FTPSession:
                 self.ftp.retrbinary('RETR '+ file, callback)
             except IOError:
                 raise IOError('File does not exist.')
+
+    # Retrives the contents of the remote file and returns its contents.
+    def retrieve(self, file):
+        class Capsule:
+            __data = None
+            
+            def set(self, data):
+                self.__data = data
+
+            def get(self):
+                return self.__data
+
+        data_file = File()
+        try:
+            self.ftp.retrbinary('RETR '+ file, data_file.set)
+            return data_file.get()
+
+        except IOError:
+            raise IOError('File does not exist.')
     
     # Deletes file
     def rm(self, file):
