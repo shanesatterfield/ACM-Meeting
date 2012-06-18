@@ -13,6 +13,7 @@ class FTPSession:
     _dirList = []
     _fileList = []
     _bothList = []
+    _layer    =  0
 
     def __init__(self, host, user, passwd):
         try:
@@ -56,21 +57,71 @@ class FTPSession:
 
 
     # Shows the files in the current directory.
-    def ls(self):
+    def ls(self, full_tree = False):
+        _list = self._fileList
         self._generate_list()
-        
-        return self._fileList
+
+        if full_tree:
+            _list = self.__recursive_list(recur = False, list_files = True, list_dir = False)
+
+        return _list
 
     # Shows the directories in the directories.
-    def dir(self):
+    def dir(self, full_tree = False):
+        _list = self._dirList
         self._generate_list()
-        return self._dirList
+
+        if full_tree:
+            _list = self.__recursive_list(recur = False, list_files = False, list_dir = True)
+
+        return _list
 
     # Shows what is in the current directory (both files and directories).
-    def list(self):
+    # Pass full_tree as True to get the entire directory tree
+    def list(self, full_tree = False):
+        _list = []
         self._generate_list()
 
-        return self._bothList
+        if not full_tree:
+            _list = self._bothList
+        else:
+            _list[:] += self.__recursive_list(recur = False, list_files = True, list_dir = True)
+
+        return _list
+
+    def __recursive_list(self, recur = False, list_files = False, list_dir = False):
+        if recur:
+            self._layer += 1
+
+        _list = []
+        
+        if len(self._fileList) > 0:
+            if list_files:
+                for _file in self._fileList:
+                    if _file != "." and _file != "..":
+                        _list[:] += [self._dir_path + '/' + _file]
+
+        if len(self._dirList) > 0:
+            path = "/".join(self._dir_path.split("/"))
+            _full_path_dirList = map(lambda x: path + '/' + x, self._dirList)
+            for _dir in _full_path_dirList:
+                if list_dir:
+                    _list[:] += [_dir + '/']
+
+                self.cd(_dir)
+                _list[:] += self.__recursive_list(True, list_files, list_dir)
+
+        else:
+            if len(self._dirList) == 0:
+                if recur == True and self._layer > 1:
+                    for n in xrange(0, self._layer):
+                        self._layer -= 1
+                        self.cd('..')
+                else:
+                    self.cd('..')
+
+        self._layer = 0
+        return _list
 
     # Changes the directory to the give path.
     def cd(self, path):
